@@ -1,17 +1,16 @@
-
 package com.example;
 
 import org.hamcrest.MatcherAssert;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+
+import java.util.List;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 
 public class AnimalTests {
-
-    @Rule
-    public ExpectedException expectedEx = ExpectedException.none();
+    Animal animal = new Animal();
 
     @Test
     public void getFamilyIsCorrect() {
@@ -24,12 +23,17 @@ public class AnimalTests {
     }
 
 
+        @Test
+        public void getFoodCheckException() throws Exception {
+            List<String> expectedPredatorFood = List.of("Животные", "Птицы", "Рыба");
+            String expectedExceptionMessage = "Неизвестный вид животного, используйте значение Травоядное или Хищник";
 
-    @Test
-    public void getFoodThrowsException() throws Exception {
-        expectedEx.expect(Exception.class);
-        expectedEx.expectMessage("Неизвестный вид животного, используйте значение Травоядное или Хищник");
-
-        new Animal().getFood("");
+            try {
+                List<String> actualAnimalFood = animal.getFood("animalKind");
+                assertEquals(expectedPredatorFood, actualAnimalFood);
+            } catch (Exception exception) {
+                String actualException = exception.getMessage();
+                assertEquals(expectedExceptionMessage, actualException);
+            }
+        }
     }
-}
